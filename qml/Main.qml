@@ -26,7 +26,7 @@ ApplicationWindow {
     spacing: 20
 
     Image {
-      source: "qrc:/MobileApp/icons/icon.svg"
+      source: "qrc:/qt/qml/MobileApp/icons/icon.svg"
       sourceSize.width: 128
       sourceSize.height: 128
       Layout.alignment: Qt.AlignHCenter
