@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-QT_VERSION="${QT_VERSION:-6.8.0}"
+QT_VERSION="${QT_VERSION:-6.11.3}"
 QT_ROOT="${QT_ROOT:-$HOME/Qt/$QT_VERSION}"
 ANDROID_SDK="${ANDROID_SDK_ROOT:-$HOME/Android/Sdk}"
 
@@ -21,7 +21,7 @@ export PATH="$HOME/.local/bin:$PATH"
 echo ""
 echo "=== Installing Qt $QT_VERSION (desktop + android) ==="
 aqt install-qt linux desktop "$QT_VERSION" linux_gcc_64 -O "$HOME/Qt"
-aqt install-qt linux android "$QT_VERSION" android_arm64_v8a -O "$HOME/Qt"
+aqt install-qt all_os android "$QT_VERSION" android_arm64_v8a -O "$HOME/Qt"
 
 echo ""
 echo "=== Installing Android SDK/NDK ==="
@@ -38,8 +38,8 @@ fi
 
 yes | "$CMDLINE_TOOLS/bin/sdkmanager" --sdk_root="$ANDROID_SDK" \
   "platform-tools" \
-  "platforms;android-35" \
-  "ndk;27.1.12297006" \
+  "platforms;android-36" \
+  "ndk;27.2.12479018" \
   "build-tools;36.0.0"
 
 echo ""
@@ -48,6 +48,6 @@ echo ""
 echo "Add to your shell profile:"
 echo "  export QT_ROOT=$QT_ROOT"
 echo "  export ANDROID_SDK_ROOT=$ANDROID_SDK"
-echo "  export ANDROID_NDK_ROOT=$ANDROID_SDK/ndk/27.1.12297006"
+echo "  export ANDROID_NDK_ROOT=$ANDROID_SDK/ndk/27.2.12479018"
 echo "  export JAVA_HOME=/usr/lib/jvm/default-java"
 echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""

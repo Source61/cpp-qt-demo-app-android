@@ -31,8 +31,8 @@ set_target_properties(mobileapp PROPERTIES
 # Android-specific settings
 if(ANDROID)
   set_target_properties(mobileapp PROPERTIES
-    QT_ANDROID_MIN_SDK_VERSION 26
-    QT_ANDROID_TARGET_SDK_VERSION 34
+    QT_ANDROID_MIN_SDK_VERSION 28
+    QT_ANDROID_TARGET_SDK_VERSION 36
   )
 endif()
 
