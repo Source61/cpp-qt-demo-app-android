@@ -1,0 +1,2 @@
+// Gradle 9 requires a settings file; androiddeployqt expects the APK named after its output dir
+rootProject.name = 'android-build'

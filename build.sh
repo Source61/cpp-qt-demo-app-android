@@ -23,7 +23,14 @@ case "$TARGET" in
     [ ! -d "$QT_HOST" ] && echo "Qt host kit not found at $QT_HOST" && exit 1
     [ ! -d "$NDK" ] && echo "Android NDK not found. Set ANDROID_NDK_ROOT or ANDROID_SDK_ROOT" && exit 1
 
+    # Android only installs signed APKs. Unless QT_ANDROID_KEYSTORE_PATH, _ALIAS, _STORE_PASS and _KEY_PASS name a release key, sign with the SDK's debug key, made if missing.
+    if [ -z "$QT_ANDROID_KEYSTORE_PATH" ]; then
+      export QT_ANDROID_KEYSTORE_PATH="$HOME/.android/debug.keystore" QT_ANDROID_KEYSTORE_ALIAS=androiddebugkey QT_ANDROID_KEYSTORE_STORE_PASS=android QT_ANDROID_KEYSTORE_KEY_PASS=android
+      [ -f "$QT_ANDROID_KEYSTORE_PATH" ] || { mkdir -p "$HOME/.android" && keytool -genkeypair -keystore "$QT_ANDROID_KEYSTORE_PATH" -storepass android -keypass android -alias androiddebugkey -keyalg RSA -validity 10000 -dname "CN=Android Debug,O=Android,C=US"; }
+    fi
+
     cmake -B "$BUILD_DIR" \
+      -DQT_ANDROID_SIGN_APK=ON \
       -DCMAKE_PREFIX_PATH="$QT_ANDROID" \
       -DCMAKE_FIND_ROOT_PATH="$QT_ANDROID" \
       -DQT_HOST_PATH="$QT_HOST" \
@@ -36,8 +43,8 @@ case "$TARGET" in
     cmake --build "$BUILD_DIR" -j"$(nproc)"
 
     echo ""
-    echo "Build done. To create APK:"
-    echo "  $QT_HOST/bin/androiddeployqt --input $BUILD_DIR/android-mobileapp-deployment-settings.json --output $BUILD_DIR/android-build --android-platform android-34 --gradle"
+    echo "Build done. APK: $BUILD_DIR/android-build/build/outputs/apk/release/android-build-release-signed.apk"
+    echo "Install: adb install -r <APK>, or copy it to the phone"
     ;;
 
   ios)

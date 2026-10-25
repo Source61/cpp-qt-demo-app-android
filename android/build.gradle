@@ -1,0 +1,62 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:9.4.1'
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+apply plugin: qtGradlePluginType
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation 'androidx.core:core:1.13.1'
+}
+
+// Overrides Qt's template (AGP 8.6 / Java 8), which fails on JDK 25. Variables come from gradle.properties written by androiddeployqt.
+android {
+    namespace = androidPackageName
+    compileSdkVersion androidCompileSdkVersion
+    ndkVersion = androidNdkVersion
+
+    // Extract native libraries from the APK
+    packaging.jniLibs.useLegacyPackaging = true
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = [qtAndroidDir + '/src', 'src', 'java']
+            res.srcDirs = [qtAndroidDir + '/res', 'res']
+            resources.srcDirs = ['resources']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    lint.abortOnError = false
+
+    // Do not compress Qt binary resources file
+    androidResources {
+        noCompress 'rcc'
+        localeFilters += ['en']
+    }
+
+    defaultConfig {
+        minSdk = qtMinSdkVersion as int
+        targetSdk = qtTargetSdkVersion as int
+        ndk.abiFilters.addAll(qtTargetAbiList.split(','))
+    }
+}

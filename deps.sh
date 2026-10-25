@@ -38,9 +38,9 @@ fi
 
 yes | "$CMDLINE_TOOLS/bin/sdkmanager" --sdk_root="$ANDROID_SDK" \
   "platform-tools" \
-  "platforms;android-34" \
+  "platforms;android-35" \
   "ndk;27.1.12297006" \
-  "build-tools;34.0.0"
+  "build-tools;36.0.0"
 
 echo ""
 echo "=== Done ==="
@@ -49,5 +49,5 @@ echo "Add to your shell profile:"
 echo "  export QT_ROOT=$QT_ROOT"
 echo "  export ANDROID_SDK_ROOT=$ANDROID_SDK"
 echo "  export ANDROID_NDK_ROOT=$ANDROID_SDK/ndk/27.1.12297006"
-echo "  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64"
+echo "  export JAVA_HOME=/usr/lib/jvm/default-java"
 echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
